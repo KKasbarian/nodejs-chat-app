@@ -25,16 +25,15 @@ app.post('/messageEndpoint', (request, response) => {
   response.sendStatus(200);
 });
 
-io.on('connection', (socket) => {
+io.on('connection', () => {
   console.log('A user connected');
 });
 
-// http.listen(port, () => {
-//   console.log(`Server is running on port ${port}`);
-// });
-
 let port = process.env.PORT;
-if (port == null || port == '') {
+if (port == null || port === '') {
   port = 8000;
 }
-app.listen(port);
+
+http.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
