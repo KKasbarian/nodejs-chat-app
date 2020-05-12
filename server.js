@@ -1,26 +1,46 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
 
 const app = express();
 const http = require('http').Server(app);
-
 const io = require('socket.io')(http);
 
-// const connectionUrl = 'mongoDB Link insert here';
+const config = require('./.configs');
+
+const connectionUrl = `mongodb+srv://${config.username}:${config.password}@${config.dbUri}`;
+mongoose.connect(connectionUrl, { useNewUrlParser: true, useUnifiedTopology: true }, (err) => {
+  if (err) {
+    throw err;
+  }
+  console.log('DB Connection successful');
+});
+
+const MessageModel = mongoose.model('message', {
+  name: String,
+  text: String,
+});
 
 app.use(express.static(__dirname));
-app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-
-let messagesStorage = [];
+app.use(bodyParser.urlencoded({ extended: false }));
 
 app.get('/messageEndpoint', (request, response) => {
-  response.send(messagesStorage);
+  MessageModel.find({}, (err, allMessages) => {
+    if (err) {
+      response.sendStatus(500);
+    }
+    response.send(allMessages);
+  });
 });
 
 app.post('/messageEndpoint', (request, response) => {
-  messagesStorage.push(request.body);
-  console.log(request.body);
+  const messagesObject = new MessageModel(request.body);
+  messagesObject.save((err) => {
+    if (err) {
+      response.sendStatus(500);
+    }
+  });
   io.emit('messageIncome', request.body);
   response.sendStatus(200);
 });
