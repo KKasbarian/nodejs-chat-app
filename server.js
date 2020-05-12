@@ -6,9 +6,10 @@ const app = express();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
 
-const config = require('./.configs');
+// const config = require('./.configs');
 
-const connectionUrl = `mongodb+srv://${config.username}:${config.password}@${config.dbUri}`;
+// const connectionUrl = `mongodb+srv://${config.username}:${config.password}@${config.dbUri}`;
+const connectionUrl = `mongodb+srv://${process.env.username}:${process.env.password}@${process.env.dbUri}`;
 mongoose.connect(connectionUrl, { useNewUrlParser: true, useUnifiedTopology: true }, (err) => {
   if (err) {
     throw err;
