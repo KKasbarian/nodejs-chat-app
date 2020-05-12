@@ -62,13 +62,13 @@
       });
 
       const getMessages = () => {
-        $.get('http://kourken-chatapp.herokuapp.com/messageEndpoint', (data) => {
+        $.get('https://kourken-chatapp.herokuapp.com/messageEndpoint', (data) => {
           data.forEach(addMessage);
         });
       };
 
       const postMessage = (messageObject) =>
-        $.post('http://kourken-chatapp.herokuapp.com/messageEndpoint', messageObject, () => {
+        $.post('https://kourken-chatapp.herokuapp.com/messageEndpoint', messageObject, () => {
           $('#messages').html('');
           getMessages();
         });
