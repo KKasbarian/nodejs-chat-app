@@ -175,7 +175,7 @@
           postMessage(message);
         });
         getMessages();
-        setTimeout($(document).scrollTop($(document).height()), 2000);
+        setTimeout(window.scrollTo(0, $(document).height()), 2000);
       });
 
       const getMessages = () => {
