@@ -133,32 +133,36 @@
       const socket = io();
 
       // Message sent date info
-      const d = new Date();
-      const minutes = `${(('' + d.getMinutes()).length < 2 ? '0' : '') + d.getMinutes()}`;
-      const hours = `${(('' + d.getHours()).length < 2 ? '0' : '') + d.getHours()}`;
-      const day = d.getDate();
-      const weekDay = d.getDay();
-      const month = d.getMonth() + 1;
-      const year = d.getFullYear();
-      const calendarDate = `${(('' + day).length < 2 ? '0' : '') + day}/${
-        (('' + month).length < 2 ? '0' : '') + month
-      }/${d.getFullYear()}`;
-      const monthNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-      let currDay = '';
+      const getCurrentFullDate = () => {
+        const d = new Date();
+        const minutes = `${(('' + d.getMinutes()).length < 2 ? '0' : '') + d.getMinutes()}`;
+        const hours = `${(('' + d.getHours()).length < 2 ? '0' : '') + d.getHours()}`;
+        const day = d.getDate();
+        const weekDay = d.getDay();
+        const month = d.getMonth() + 1;
+        const year = d.getFullYear();
+        const calendarDate = `${(('' + day).length < 2 ? '0' : '') + day}/${
+          (('' + month).length < 2 ? '0' : '') + month
+        }/${d.getFullYear()}`;
+        const monthNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        let currDay = '';
 
-      monthNames.forEach((monthName, index) => {
-        if (index == weekDay) {
-          currDay = monthName;
-        }
-        return currDay;
-      });
+        monthNames.forEach((monthName, index) => {
+          if (index == weekDay) {
+            currDay = monthName;
+          }
+          return currDay;
+        });
+
+        return `${currDay} ${calendarDate} ${hours}:${minutes}`;
+      };
 
       $(() => {
         $('#send').click(() => {
           const message = {
             name: $('#name').val(),
             text: $('#message').val(),
-            date: `${currDay} ${calendarDate} ${hours}:${minutes}`,
+            date: getCurrentFullDate(),
           };
           $('#name').prop('disabled', true);
           $('#message').val('');
