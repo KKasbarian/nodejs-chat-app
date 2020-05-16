@@ -12,6 +12,7 @@ const io = require('socket.io')(http);
 const connectionUrl = `mongodb+srv://${process.env.username}:${process.env.password}@${process.env.dbUri}`;
 mongoose.connect(connectionUrl, { useNewUrlParser: true, useUnifiedTopology: true }, (err) => {
   if (err) {
+    console.log(err);
     throw err;
   }
   console.log('DB Connection successful');

@@ -14,6 +14,89 @@
     />
 
     <title>Hello, world!</title>
+
+    <style>
+      #messages {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .message {
+        position: relative;
+        width: 50%;
+        background: #fff;
+        padding: 20px;
+        margin-left: 30px;
+        margin-bottom: 40px;
+        border: none;
+        border-radius: 10px;
+      }
+
+      .message:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -21px;
+        width: 0;
+        height: 0;
+        background: transparent;
+        border-left: 25px solid transparent;
+        border-bottom: 25px solid transparent;
+        border-top: 25px solid #fff;
+        border-right: 25px solid transparent;
+      }
+
+      .myMessage {
+        position: relative;
+        width: 50%;
+        background: #aef577;
+        padding: 20px;
+        margin-right: 30px;
+        margin-bottom: 40px;
+        border: none;
+        border-radius: 10px;
+        align-self: flex-end;
+      }
+
+      .myMessage:before {
+        position: absolute;
+        content: '';
+        top: 0;
+        right: -21px;
+        width: 0;
+        height: 0;
+        background: transparent;
+        border-left: 25px solid transparent;
+        border-bottom: 25px solid transparent;
+        border-top: 25px solid #aef577;
+        border-right: 25px solid transparent;
+      }
+
+      .myMessage h4.senderName,
+      .message h4.senderName {
+        font-size: 16px;
+        font-family: arial, helvetica, sans-serif;
+        font-weight: 600;
+        margin-bottom: 5px;
+      }
+
+      .myMessage h4.senderMessage,
+      .message p.senderMessage {
+        margin: 0;
+        font-size: 16px;
+        font-weight: 400;
+      }
+
+      .myMessage p.messageSentDateInfo,
+      .message p.messageSentDateInfo {
+        margin: 0;
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        font-size: 11px;
+      }
+    </style>
   </head>
 
   <body>
@@ -28,7 +111,7 @@
         <br /><br />
         <button id="send" class="btn btn-success">Send</button>
       </div>
-      <div id="messages"></div>
+      <div id="messages" class="jumbotron"></div>
     </div>
 
     <!-- Optional JavaScript -->
@@ -48,17 +131,40 @@
     <script src="/socket.io/socket.io.js"></script>
     <script>
       const socket = io();
+
+      // Message sent date info
+      const d = new Date();
+      const minutes = `${(('' + d.getMinutes()).length < 2 ? '0' : '') + d.getMinutes()}`;
+      const hours = `${(('' + d.getHours()).length < 2 ? '0' : '') + d.getHours()}`;
+      const day = d.getDate();
+      const weekDay = d.getDay();
+      const month = d.getMonth() + 1;
+      const year = d.getFullYear();
+      const calendarDate = `${(('' + day).length < 2 ? '0' : '') + day}/${
+        (('' + month).length < 2 ? '0' : '') + month
+      }/${d.getFullYear()}`;
+      const monthNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+      let currDay = '';
+
+      monthNames.forEach((monthName, index) => {
+        if (index == weekDay) {
+          currDay = monthName;
+        }
+        return currDay;
+      });
+
       $(() => {
         $('#send').click(() => {
           const message = {
             name: $('#name').val(),
             text: $('#message').val(),
           };
-          $('#name').val('');
+          $('#name').prop('disabled', true);
           $('#message').val('');
           postMessage(message);
         });
         getMessages();
+        $(document).scrollTop($(document).height());
       });
 
       const getMessages = () => {
@@ -73,8 +179,25 @@
           getMessages();
         });
 
-      const addMessage = (inputMessage) =>
-        $('#messages').append(`<h4> ${inputMessage.name} </h4> <p> ${inputMessage.text} </p>`);
+      const addMessage = (inputMessage) => {
+        $('#messages').append(`
+          <div class="message">
+            <h4 class="senderName"> ${inputMessage.name} </h4>
+            <p class="senderMessage"> ${inputMessage.text} </p>
+            <p class="messageSentDateInfo"><span>${currDay} ${calendarDate} ${hours}:${minutes}</span></p>
+          </div>
+          `);
+      };
+
+      const addMyMessage = (inputMessage) => {
+        $('#messages').append(`
+          <div class="myMessage">
+            <h4 class="senderName"> ${inputMessage.name} </h4>
+            <p class="senderMessage"> ${inputMessage.text} </p>
+            <p class="messageSentDateInfo"><span>${currDay} ${calendarDate} ${hours}:${minutes}</span></p>
+          </div>
+          `);
+      };
 
       socket.on('messageIncome', addMessage);
     </script>
