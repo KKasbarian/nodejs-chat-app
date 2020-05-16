@@ -96,6 +96,12 @@
         right: 20px;
         font-size: 11px;
       }
+
+      @media screen and (max-width: 767px) {
+        .myMessage {
+          width: 90%;
+        }
+      }
     </style>
   </head>
 
@@ -169,7 +175,7 @@
           postMessage(message);
         });
         getMessages();
-        $(document).scrollTop($(document).height());
+        setTimeout($(document).scrollTop($(document).height()), 2000);
       });
 
       const getMessages = () => {
