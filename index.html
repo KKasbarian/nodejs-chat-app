@@ -184,20 +184,20 @@
           <div class="message">
             <h4 class="senderName"> ${inputMessage.name} </h4>
             <p class="senderMessage"> ${inputMessage.text} </p>
-            <p class="messageSentDateInfo"><span>${currDay} ${calendarDate} ${hours}:${minutes}</span></p>
+            
           </div>
           `);
       };
 
-      const addMyMessage = (inputMessage) => {
-        $('#messages').append(`
-          <div class="myMessage">
-            <h4 class="senderName"> ${inputMessage.name} </h4>
-            <p class="senderMessage"> ${inputMessage.text} </p>
-            <p class="messageSentDateInfo"><span>${currDay} ${calendarDate} ${hours}:${minutes}</span></p>
-          </div>
-          `);
-      };
+      // const addMyMessage = (inputMessage) => {
+      //   $('#messages').append(`
+      //     <div class="myMessage">
+      //       <h4 class="senderName"> ${inputMessage.name} </h4>
+      //       <p class="senderMessage"> ${inputMessage.text} </p>
+      //       <p class="messageSentDateInfo"><span>${currDay} ${calendarDate} ${hours}:${minutes}</span></p>
+      //     </div>
+      //     `);
+      // };
 
       socket.on('messageIncome', addMessage);
     </script>
