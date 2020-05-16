@@ -158,6 +158,7 @@
           const message = {
             name: $('#name').val(),
             text: $('#message').val(),
+            date: `${currDay} ${calendarDate} ${hours}:${minutes}`,
           };
           $('#name').prop('disabled', true);
           $('#message').val('');
@@ -184,7 +185,7 @@
           <div class="message">
             <h4 class="senderName"> ${inputMessage.name} </h4>
             <p class="senderMessage"> ${inputMessage.text} </p>
-            
+            <p class="messageSentDateInfo">${inputMessage.date}</p>
           </div>
           `);
       };
@@ -194,7 +195,7 @@
       //     <div class="myMessage">
       //       <h4 class="senderName"> ${inputMessage.name} </h4>
       //       <p class="senderMessage"> ${inputMessage.text} </p>
-      //       <p class="messageSentDateInfo"><span>${currDay} ${calendarDate} ${hours}:${minutes}</span></p>
+      //       <p class="messageSentDateInfo">${inputMessage.date}</p>
       //     </div>
       //     `);
       // };

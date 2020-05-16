@@ -21,6 +21,7 @@ mongoose.connect(connectionUrl, { useNewUrlParser: true, useUnifiedTopology: tru
 const MessageModel = mongoose.model('message', {
   name: String,
   text: String,
+  date: String,
 });
 
 app.use(express.static(__dirname));
