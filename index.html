@@ -162,6 +162,9 @@
 
         return `${currDay} ${calendarDate} ${hours}:${minutes}`;
       };
+      const scrollDown = () => {
+        $('html, body').animate({ scrollTop: $(document).height() }, 'slow');
+      };
 
       $(() => {
         $('#send').click(() => {
@@ -175,7 +178,7 @@
           postMessage(message);
         });
         getMessages();
-        setTimeout(window.scrollTo(0, $(document).height()), 2000);
+        setTimeout(scrollDown, 3000);
       });
 
       const getMessages = () => {
